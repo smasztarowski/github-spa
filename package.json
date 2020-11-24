@@ -2,9 +2,21 @@
   "name": "github-spa",
   "version": "0.0.1",
   "description": "A single page application that displays a list of Github users by using the Github public API",
-  "main": "index.js",
+  "homepage": ".",
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^11.2.2",
+    "@testing-library/user-event": "^12.2.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.1",
+    "web-vitals": "^0.2.4"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "repository": {
     "type": "git",
@@ -23,7 +35,6 @@
   "bugs": {
     "url": "https://github.com/smasztarowski/github-spa/issues"
   },
-  "homepage": "https://github.com/smasztarowski/github-spa#readme",
   "devDependencies": {
     "commitizen": "^4.2.2",
     "cz-conventional-changelog": "^3.3.0"
@@ -32,5 +43,23 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

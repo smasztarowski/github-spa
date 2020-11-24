@@ -1,0 +1,27 @@
+{
+  "name": "github-spa",
+  "version": "0.0.1",
+  "description": "A single page application that displays a list of Github users by using the Github public API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smasztarowski/github-spa.git"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "typescript",
+    "api",
+    "github",
+    "spa"
+  ],
+  "author": "Sebastian Masztarowski",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/smasztarowski/github-spa/issues"
+  },
+  "homepage": "https://github.com/smasztarowski/github-spa#readme"
+}

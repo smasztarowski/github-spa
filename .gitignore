@@ -341,3 +341,4 @@ $RECYCLE.BIN/
 
 # create react app auto generated file https://github.com/facebook/create-react-app/issues/6560
 src/react-app-env.d.ts
+build

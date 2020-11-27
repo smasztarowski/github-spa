@@ -5,5 +5,5 @@ export function getPaginationData(respone: Response<unknown>): Links | null {
     const { headers } = respone;
     const { link } = headers;
 
-    return parseLinkHeader(link);
+    return parseLinkHeader(link ?? '');
 }

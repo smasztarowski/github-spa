@@ -5,17 +5,23 @@ import { usersDetailsData } from './constants/mockUsersDetails';
 
 export class SandboxApi extends GithubApi {
     public getGithubUser(params: { username: string }): GithubUserResponse {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             const userDetails = usersDetailsData.find((user) => user.login === params.username);
-            resolve({
-                data: userDetails,
-                statusText: '',
-                config: {},
-                headers: {
-                    link: '',
-                },
-                status: 200,
-            });
+            if (userDetails) {
+                resolve({
+                    data: userDetails,
+                    statusText: 'OK',
+                    config: {},
+                    headers: {},
+                    status: 200,
+                });
+            } else {
+                reject({
+                    status: 404,
+                    statusText: 'Not Found',
+                });
+            }
+            
         });
     }
     public getGithubUsers(): GithubUsersResponse {

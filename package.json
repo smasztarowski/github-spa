@@ -8,6 +8,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "generate-mock-data": "node scripts/generateGithubData.js",
     "commit": "cz"
   },
   "repository": {
@@ -52,7 +53,10 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.6",
     "commitizen": "^4.2.2",
-    "cz-conventional-changelog": "^3.3.0"
+    "crypto-random-string": "^3.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "lorem-ipsum": "^2.0.3",
+    "random-email": "^1.0.3"
   },
   "config": {
     "commitizen": {

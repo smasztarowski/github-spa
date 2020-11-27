@@ -1,4 +1,4 @@
-import { SandboxApi } from './Sanbox/SandboxApi';
+import { SandboxApi } from './Sandbox/SandboxApi';
 import { GithubApi } from './Github/GithubApi';
 import { Env } from '../utils/env';
 

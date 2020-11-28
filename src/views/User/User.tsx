@@ -4,8 +4,8 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 
-import { getRouteUrl } from '../Router/utils/routeData';
-import { View } from '../enums/view';
+import { getRouteUrl } from '../../Router/utils/routeData';
+import { View } from '../../enums/view';
 
 function User() {
     const history = useHistory();

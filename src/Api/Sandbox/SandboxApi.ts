@@ -1,10 +1,10 @@
 import { GithubApi } from '../Github/GithubApi';
-import { GithubUserResponse, GithubUsersResponse } from '../Github/github.interfaces';
+import { GetGithubUser, GetGithubUsers, GithubUser, GithubUsersParams } from '../Github/github.interfaces';
 import { usersData } from './constants/mockUsers';
 import { usersDetailsData } from './constants/mockUsersDetails';
 
 export class SandboxApi extends GithubApi {
-    public getGithubUser(params: { username: string }): GithubUserResponse {
+    public getGithubUser(params: { username: string }): GetGithubUser {
         return new Promise((resolve, reject) => {
             const userDetails = usersDetailsData.find((user) => user.login === params.username);
             if (userDetails) {
@@ -24,9 +24,14 @@ export class SandboxApi extends GithubApi {
             
         });
     }
-    public getGithubUsers(): GithubUsersResponse {
+    public getGithubUsers(params: GithubUsersParams): GetGithubUsers {
+        const { since, per_page } = params;
+        const sinceUserIndex = usersData.findIndex((user: GithubUser) => user.id === since);
+        const start = sinceUserIndex < 0 ? 0 : sinceUserIndex
+        const end = start + per_page;
+
         return Promise.resolve({
-            data: usersData,
+            data: usersData.slice(start, end),
             statusText: '',
             config: {},
             headers: {

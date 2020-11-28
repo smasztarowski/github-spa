@@ -51,8 +51,18 @@ export interface GithubUsersParams {
     per_page: number;
 }
 
+export interface GithubUsersCountParams {
+    q: string;
+}
+
+export interface GithubUsersCount {
+    total_count: number;
+}
+
 export type GithubUserResponse = Response<GithubUserAccount>;
 export type GithubUsersResponse = Response<GithubUser[]>;
+export type GithubUsersCountResponse = Response<GithubUsersCount>;
 
 export type GetGithubUser = Promise<GithubUserResponse>;
 export type GetGithubUsers = Promise<GithubUsersResponse>;
+export type GetGithubUsersCount = Promise<GithubUsersCountResponse>;

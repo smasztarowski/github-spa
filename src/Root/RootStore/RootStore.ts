@@ -3,11 +3,13 @@ import logger from 'redux-logger';
 
 import { Env } from '../../utils/env';
 import { rootReducer } from '../root.reducer';
-import { RootStoreState } from './rootStore.interfaces';
 import { githubUsersInitialState } from '../../GithubUsers/constants/initialState';
+import { githubUsersCountInitialState } from '../../GithubUsersCount/constants/initialState';
+import { RootState } from '../root.interfaces';
 
-const preloadedState: RootStoreState = {
+const preloadedState: RootState = {
     githubUsers: githubUsersInitialState,
+    githubUsersCount: githubUsersCountInitialState,
 };
 
 export const rootStore = configureStore({

@@ -1,5 +1,5 @@
 import { GithubApi } from '../Github/GithubApi';
-import { GetGithubUser, GetGithubUsers, GithubUser, GithubUsersParams } from '../Github/github.interfaces';
+import { GetGithubUser, GetGithubUsers, GetGithubUsersCount, GithubUser, GithubUsersParams } from '../Github/github.interfaces';
 import { usersData } from './constants/mockUsers';
 import { usersDetailsData } from './constants/mockUsersDetails';
 
@@ -11,7 +11,6 @@ export class SandboxApi extends GithubApi {
                 resolve({
                     data: userDetails,
                     statusText: 'OK',
-                    config: {},
                     headers: {},
                     status: 200,
                 });
@@ -35,9 +34,47 @@ export class SandboxApi extends GithubApi {
             statusText: '',
             config: {},
             headers: {
-                link: '',
+                link: this.getLinkHeader(params),
             },
             status: 200,
         })
+    }
+
+    public getGithubUsersCount(): GetGithubUsersCount {
+        return Promise.resolve({
+            data: {
+                total_count: usersData.length
+            },
+            statusText: '',
+            config: {},
+            headers: {
+                link: '',
+            },
+            status: 200,
+        });
+    }
+
+    private getLinkHeader(params: GithubUsersParams): string {
+        const { since, per_page } = params;
+        const allPages = Math.ceil(usersData.length / per_page);
+        const currentPage = Math.ceil(since / per_page);
+        const prevPage = currentPage - 1;
+        const nextPage = currentPage + 1;
+        const prev = `<https://api.github.com/user/repos?page=${prevPage}&per_page=${per_page}>; rel="prev"`;
+        const next = `<https://api.github.com/user/repos?page=${nextPage}&per_page=${per_page}>; rel="next"`;
+        const last = `<https://api.github.com/user/repos?page=${allPages}&per_page=${per_page}>; rel="last"`;
+        const first = `<https://api.github.com/user/repos?page=1&per_page=${per_page}>; rel="last"`;
+
+        let linkValue = '';
+
+        if (prevPage > 0) {
+            linkValue = `${prev}, ${first}`;
+        }
+
+        if (nextPage < allPages) {
+            linkValue += `, ${next}, ${last}`
+        }
+
+        return linkValue;
     }
 }

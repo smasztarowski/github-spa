@@ -1,5 +1,3 @@
-import { Links } from 'parse-link-header';
-
 export interface Response<T> {
     data: T;
     status: number;
@@ -15,4 +13,17 @@ export interface RequestConfig<Params = Record<string, unknown>> {
     headers?: Record<string, unknown>;
 }
 
-export type Pagination = Links | null;
+export interface PaginationPage {
+    page: string;
+    per_page: string;
+    rel: string;
+    url: string;
+}
+
+export interface PaginationLinks {
+    next?: PaginationPage;
+    prev?: PaginationPage;
+    last?: PaginationPage;
+}
+
+export type Pagination = PaginationLinks | null;

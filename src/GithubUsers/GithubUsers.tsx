@@ -1,9 +1,8 @@
 import { FC, useCallback, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { DataGrid, ColDef, PageChangeParams } from '@material-ui/data-grid';
-import { fetchGithubUsers } from './githubUsers.acions';
+import { fetchGithubUsers } from './githubUsers.actions';
 import { setCurrentPage, setFetchedPages } from './githubUsers.slice';
-import { useAppDispatch } from '../hooks/useAppDispatch';
 import {
     getGithubUsers,
     getGithubUsersLoadingState,
@@ -11,9 +10,20 @@ import {
     getGithubUsersFetchedPages,
 } from './githubUsers.selectors';
 
+import {
+    fetchGithubUsersCount,
+} from '../GithubUsersCount/githubUsersCount.actions';
+import {
+    getGithubUsersTotalCount,
+    getGithubUsersCountLoadingState,
+} from '../GithubUsersCount/githubUsersCount.selectors';
+
+import { useAppDispatch } from '../hooks/useAppDispatch';
+
 import { GithubUserAvatar } from './GithubUserAvatar';
 
 import { GithubUsersWrapper } from './styled/GithubUsersWrapper';
+
 import { GithubUser } from '../Api/Github/github.interfaces';
 
 import { rowHeight, baseColumnWidth, idColumnWidth } from './constants/dataGrid';
@@ -51,6 +61,8 @@ export const GithubUsers: FC = () => {
     const githubUsers = useSelector(getGithubUsers);
     const loadingState = useSelector(getGithubUsersLoadingState);
     const currentPage = useSelector(getGithubUsersCurrentPage);
+    const totalCount = useSelector(getGithubUsersTotalCount);
+    const totalCountLoadingState = useSelector(getGithubUsersCountLoadingState);
     const shouldFetchUsers = githubUsers.length === 0;
     const initialPage = useRef(currentPage).current;
 
@@ -59,6 +71,12 @@ export const GithubUsers: FC = () => {
             dispatch(fetchGithubUsers({ since: 0, per_page: pageSize }));
         }
     }, [dispatch, shouldFetchUsers]);
+
+    useEffect(() => {
+        if (totalCount === 0 && totalCountLoadingState !== LoadingState.Finished) {
+            dispatch(fetchGithubUsersCount());
+        }
+    }, [dispatch, totalCount, totalCountLoadingState]);
 
     useEffect(() => {
         if (!fetchedPages[currentPage]) {
@@ -90,11 +108,11 @@ export const GithubUsers: FC = () => {
                     }))}
                     columns={columns}
                     rowHeight={rowHeight}
-                    rowCount={99}
+                    rowCount={totalCount}
                     pageSize={pageSize}
                     pagination={true}
                     onPageChange={handlePageChange}
-                    loading={loadingState === LoadingState.Pending}
+                    loading={loadingState === LoadingState.Pending || totalCountLoadingState === LoadingState.Pending}
                 />
             </div>
         </GithubUsersWrapper>

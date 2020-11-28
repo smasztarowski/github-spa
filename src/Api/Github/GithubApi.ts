@@ -5,6 +5,9 @@ import {
     GithubUsersParams,
     GetGithubUsers,
     GetGithubUser,
+    GetGithubUsersCount,
+    GithubUsersCount,
+    GithubUsersCountParams,
 } from './github.interfaces';
 
 export class GithubApi {
@@ -24,6 +27,16 @@ export class GithubApi {
         return request.get<GithubUser[], GithubUsersParams>(
             `${this.apiUrl}users`, {
             params,
+            headers: this.headers,
+        });
+    }
+
+    public getGithubUsersCount(): GetGithubUsersCount {
+        return request.get<GithubUsersCount, GithubUsersCountParams>(
+            `${this.apiUrl}search/users`, {
+            params: {
+                q: 'type:user',
+            },
             headers: this.headers,
         });
     }

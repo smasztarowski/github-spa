@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { LoadingState } from '../enums/loadingState';
 import { getPaginationData } from '../Request/utils/getPaginationData';
 import { githubUsersInitialState } from './constants/initialState';
-import { fetchGithubUsers } from './githubUsers.acions';
+import { fetchGithubUsers } from './githubUsers.actions';
 
 export const githubUsersSlice = createSlice({
   name: 'githubUsers',

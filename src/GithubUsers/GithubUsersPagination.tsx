@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ComponentProps } from '@material-ui/data-grid';
 import Pagination from '@material-ui/lab/Pagination';
 import { useAppDispatch } from '../hooks/useAppDispatch';
-import { fetchGithubUsers } from './githubUsers.acions';
+import { fetchGithubUsers } from './githubUsers.actions';
 
 const useStyles = makeStyles({
     root: {

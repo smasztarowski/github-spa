@@ -1,5 +1,5 @@
 import { GithubApi } from '../Github/GithubApi';
-import { GetGithubUser, GetGithubUsers, GithubUser, GithubUsersParams } from '../Github/github.interfaces';
+import { GetGithubUser, GetGithubUsers, GetGithubUsersCount, GithubUser, GithubUsersParams } from '../Github/github.interfaces';
 import { usersData } from './constants/mockUsers';
 import { usersDetailsData } from './constants/mockUsersDetails';
 
@@ -38,6 +38,20 @@ export class SandboxApi extends GithubApi {
             },
             status: 200,
         })
+    }
+
+    public getGithubUsersCount(): GetGithubUsersCount {
+        return Promise.resolve({
+            data: {
+                total_count: usersData.length
+            },
+            statusText: '',
+            config: {},
+            headers: {
+                link: '',
+            },
+            status: 200,
+        });
     }
 
     private getLinkHeader(params: GithubUsersParams): string {

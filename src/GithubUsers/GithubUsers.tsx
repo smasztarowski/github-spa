@@ -5,31 +5,64 @@ import { fetchGithubUsers } from './githubUsers.acions';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { getGithubUsers } from './githubUsers.selectors';
 
+import { GithubUserAvatar } from './GithubUserAvatar';
+
+import { GithubUsersWrapper } from './styled/GithubUsersWrapper';
+import { GithubUser } from '../Api/Github/github.interfaces';
+
+import { rowHeight, baseColumnWidth, idColumnWidth } from './constants/dataGrid';
+import { DataGridColumn } from './enums/dataGridColumn';
+
 const columns: ColDef[] = [
-    { field: 'col1', headerName: 'Column 1', width: 150 },
-    { field: 'col2', headerName: 'Column 2', width: 150, renderCell(params) {
-        return (<img style={{height: '100%'}} alt="" src={params.value as string ?? undefined}/>);
-    } },
+    {
+        field: DataGridColumn.Id,
+        headerName: 'ID',
+        width: idColumnWidth,
+    },
+    {
+        field: DataGridColumn.Avatar,
+        headerName: 'Avatar',
+        width: baseColumnWidth,
+        sortable: false,
+        renderCell(params) {
+            const { login, avatar_url } = params.value as GithubUser;
+            return (<GithubUserAvatar login={login} url={avatar_url} />);
+        }
+    },
+    {
+        field: DataGridColumn.Username,
+        headerName: 'Login',
+        width: baseColumnWidth,
+    },
 ];
 
 export const GithubUsers: FC = () => {
     const dispatch = useAppDispatch();
     const githubUsers = useSelector(getGithubUsers);
+    const shouldFetchUsers = githubUsers.length === 0;
 
     useEffect(() => {
-        dispatch(fetchGithubUsers({ since: 1, per_page: 2 }));
-    }, [dispatch]);
+        if (shouldFetchUsers) {
+            dispatch(fetchGithubUsers({ since: 0, per_page: 10 }));
+        }
+    }, [dispatch, shouldFetchUsers]);
 
     const getRows = useCallback(() => githubUsers.map((user) => ({
-        id: user.id,
-        col1: user.login,
-        col2: user.avatar_url,
+        [DataGridColumn.Id]: user.id,
+        [DataGridColumn.Avatar]: user,
+        [DataGridColumn.Username]: user.login,
     })), [githubUsers]);
 
     return (
-        <div style={{ minHeight: 300, height: '100%', width: '100%' }}>
-            <DataGrid className="TEST" rows={getRows()} columns={columns} />
-        </div>
+        <GithubUsersWrapper>
+            <div className="data-grid-wrapper">
+                <DataGrid
+                    rows={getRows()}
+                    columns={columns}
+                    rowHeight={rowHeight}
+                />
+            </div>
+        </GithubUsersWrapper>
     );
 };
 

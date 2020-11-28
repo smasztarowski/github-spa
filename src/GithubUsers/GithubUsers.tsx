@@ -43,7 +43,7 @@ export const GithubUsers: FC = () => {
 
     useEffect(() => {
         if (shouldFetchUsers) {
-            dispatch(fetchGithubUsers({ since: 0, per_page: 10 }));
+            dispatch(fetchGithubUsers({ since: 0, per_page: 6 }));
         }
     }, [dispatch, shouldFetchUsers]);
 

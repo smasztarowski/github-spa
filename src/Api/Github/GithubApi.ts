@@ -2,8 +2,9 @@ import { request } from '../../Request/Request';
 import {
     GithubUserAccount,
     GithubUser,
-    GithubUserResponse,
-    GithubUsersResponse,
+    GithubUsersParams,
+    GetGithubUsers,
+    GetGithubUser,
 } from './github.interfaces';
 
 export class GithubApi {
@@ -12,15 +13,15 @@ export class GithubApi {
         Accept: 'application/vnd.github.v3+json',
     };
 
-    public getGithubUser(params: { username: string }): GithubUserResponse {
+    public getGithubUser(params: { username: string }): GetGithubUser {
         return request.get<GithubUserAccount>(
             `${this.apiUrl}user`, {
             params, headers: this.headers,
         });
     }
 
-    public getGithubUsers(params?: { since: number, per_page: number }): GithubUsersResponse {
-        return request.get<GithubUser[]>(
+    public getGithubUsers(params: GithubUsersParams): GetGithubUsers {
+        return request.get<GithubUser[], GithubUsersParams>(
             `${this.apiUrl}users`, {
             params,
             headers: this.headers,

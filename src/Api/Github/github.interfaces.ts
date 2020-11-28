@@ -1,4 +1,3 @@
-
 import {Response} from '../../Request/request.interfaces';
 
 export interface GithubUser {
@@ -47,5 +46,13 @@ export interface GithubUserAccount extends GithubUser {
     plan?: GithubUserAccountPlan;
 }
 
-export type GithubUserResponse = Promise<Response<GithubUserAccount>>;
-export type GithubUsersResponse = Promise<Response<GithubUser[]>>;
+export interface GithubUsersParams {
+    since: number;
+    per_page: number;
+}
+
+export type GithubUserResponse = Response<GithubUserAccount>;
+export type GithubUsersResponse = Response<GithubUser[]>;
+
+export type GetGithubUser = Promise<GithubUserResponse>;
+export type GetGithubUsers = Promise<GithubUsersResponse>;

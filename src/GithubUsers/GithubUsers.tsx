@@ -1,9 +1,15 @@
-import { FC, useCallback, useEffect } from 'react';
+import { FC, useCallback, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { DataGrid, ColDef } from '@material-ui/data-grid';
+import { DataGrid, ColDef, PageChangeParams } from '@material-ui/data-grid';
 import { fetchGithubUsers } from './githubUsers.acions';
+import { setCurrentPage, setFetchedPages } from './githubUsers.slice';
 import { useAppDispatch } from '../hooks/useAppDispatch';
-import { getGithubUsers } from './githubUsers.selectors';
+import {
+    getGithubUsers,
+    getGithubUsersLoadingState,
+    getGithubUsersCurrentPage,
+    getGithubUsersFetchedPages,
+} from './githubUsers.selectors';
 
 import { GithubUserAvatar } from './GithubUserAvatar';
 
@@ -12,6 +18,7 @@ import { GithubUser } from '../Api/Github/github.interfaces';
 
 import { rowHeight, baseColumnWidth, idColumnWidth } from './constants/dataGrid';
 import { DataGridColumn } from './enums/dataGridColumn';
+import { LoadingState } from '../enums/loadingState';
 
 const columns: ColDef[] = [
     {
@@ -36,30 +43,58 @@ const columns: ColDef[] = [
     },
 ];
 
+const pageSize = 6;
+
 export const GithubUsers: FC = () => {
     const dispatch = useAppDispatch();
+    const fetchedPages = useSelector(getGithubUsersFetchedPages);
     const githubUsers = useSelector(getGithubUsers);
+    const loadingState = useSelector(getGithubUsersLoadingState);
+    const currentPage = useSelector(getGithubUsersCurrentPage);
     const shouldFetchUsers = githubUsers.length === 0;
+    const initialPage = useRef(currentPage).current;
 
     useEffect(() => {
         if (shouldFetchUsers) {
-            dispatch(fetchGithubUsers({ since: 0, per_page: 6 }));
+            dispatch(fetchGithubUsers({ since: 0, per_page: pageSize }));
         }
     }, [dispatch, shouldFetchUsers]);
 
-    const getRows = useCallback(() => githubUsers.map((user) => ({
-        [DataGridColumn.Id]: user.id,
-        [DataGridColumn.Avatar]: user,
-        [DataGridColumn.Username]: user.login,
-    })), [githubUsers]);
+    useEffect(() => {
+        if (!fetchedPages[currentPage]) {
+            dispatch(setFetchedPages({ [currentPage]: true }));
+            dispatch(fetchGithubUsers({ since: ((currentPage - 1) * pageSize) + 1, per_page: pageSize }));
+        }
+    }, [dispatch, currentPage, fetchedPages]);
+
+    const handlePageChange = useCallback((params: PageChangeParams) => {
+        const { page } = params;
+        if (page === 1 && currentPage === initialPage) {
+            dispatch(setCurrentPage(currentPage));
+            return;
+        }
+        if (page !== currentPage) {
+            dispatch(setCurrentPage(page));
+        }
+    }, [dispatch, currentPage, initialPage]);
 
     return (
         <GithubUsersWrapper>
             <div className="data-grid-wrapper">
                 <DataGrid
-                    rows={getRows()}
+                    page={currentPage}
+                    rows={githubUsers.map((user) => ({
+                        [DataGridColumn.Id]: user.id,
+                        [DataGridColumn.Avatar]: user,
+                        [DataGridColumn.Username]: user.login,
+                    }))}
                     columns={columns}
                     rowHeight={rowHeight}
+                    rowCount={99}
+                    pageSize={pageSize}
+                    pagination={true}
+                    onPageChange={handlePageChange}
+                    loading={loadingState === LoadingState.Pending}
                 />
             </div>
         </GithubUsersWrapper>

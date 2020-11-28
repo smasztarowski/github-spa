@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { LoadingState } from '../enums/loadingState';
 import { getPaginationData } from '../Request/utils/getPaginationData';
 import { githubUsersInitialState } from './constants/initialState';
@@ -7,7 +7,17 @@ import { fetchGithubUsers } from './githubUsers.acions';
 export const githubUsersSlice = createSlice({
   name: 'githubUsers',
   initialState: githubUsersInitialState,
-  reducers: {},
+  reducers: {
+    setCurrentPage(state, acttion: PayloadAction<number>) {
+      state.currentPage = acttion.payload;
+    },
+    setFetchedPages(state, acttion: PayloadAction<Record<number, boolean>>) {
+      state.fetchedPages = {
+        ...state.fetchedPages,
+        ...acttion.payload,
+      };
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchGithubUsers.pending, (state, action) => {
@@ -20,7 +30,10 @@ export const githubUsersSlice = createSlice({
         const { requestId } = action.meta
         if (state.loading === LoadingState.Pending && state.currentRequestId === requestId) {
           state.loading = LoadingState.Idle;
-          state.entities = action.payload?.data ?? [];
+          state.entities = [
+            ...state.entities,
+            ...(action.payload?.data ?? []),
+          ];
           state.meta.pagintion = getPaginationData(action.payload);
           state.currentRequestId = undefined
         }
@@ -34,3 +47,5 @@ export const githubUsersSlice = createSlice({
       });
   },
 });
+
+export const { setCurrentPage, setFetchedPages } = githubUsersSlice.actions;

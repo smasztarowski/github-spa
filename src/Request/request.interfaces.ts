@@ -5,7 +5,6 @@ export interface Response<T> {
     headers: Record<string, unknown> & Partial<{
         link: string;
     }>;
-    config: Record<string, unknown>;
 }
 
 export interface RequestConfig<Params = Record<string, unknown>> {

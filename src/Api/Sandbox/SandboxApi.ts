@@ -11,7 +11,6 @@ export class SandboxApi extends GithubApi {
                 resolve({
                     data: userDetails,
                     statusText: 'OK',
-                    config: {},
                     headers: {},
                     status: 200,
                 });

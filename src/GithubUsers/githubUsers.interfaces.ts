@@ -11,4 +11,6 @@ export interface GithubUsersState {
     loading: LoadingState,
     currentRequestId?: string;
     meta: GithubUsersMeta;
+    currentPage: number;
+    fetchedPages: Record<number, boolean>;
 };

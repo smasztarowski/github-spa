@@ -9,4 +9,6 @@ export const githubUsersInitialState: GithubUsersState = {
     meta: {
         pagintion: null,
     },
+    currentPage: 1,
+    fetchedPages: {},
 };

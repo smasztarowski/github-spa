@@ -8,6 +8,21 @@ export const getGithubUsers = createSelector(
     state => state.entities,
 );
 
+export const getGithubUsersLoadingState = createSelector(
+    getGithubUsersState,
+    state => state.loading,
+);
+
+export const getGithubUsersCurrentPage = createSelector(
+    getGithubUsersState,
+    state => state.currentPage,
+);
+
+export const getGithubUsersFetchedPages = createSelector(
+    getGithubUsersState,
+    state => state.fetchedPages,
+);
+
 export const getGithubUsersMeta = createSelector(
     getGithubUsersState,
     state => state.meta,

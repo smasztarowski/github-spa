@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import {Link} from 'react-router-dom';
 
 import { AvatarWrapper } from './styled/AvatarWrapper';
 
@@ -11,9 +12,9 @@ export const GithubUserAvatar: FC<GithubUserAvatarProps> = (props) => {
     const { url, login } = props;
     return (
         <AvatarWrapper>
-            <a className='avatar-anchor' href={`/user/${login}`}>
+            <Link className='avatar-anchor' to={`/user/${login}`}>
                 <img className='avatar-image' alt={`${login} avatar`} src={url} />
-            </a>
+            </Link>
         </AvatarWrapper>
     );
 };

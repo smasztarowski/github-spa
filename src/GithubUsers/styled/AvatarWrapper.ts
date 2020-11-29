@@ -8,13 +8,6 @@ export const AvatarWrapper = styled.div`
     height: ${rowHeight}px;
     width: ${baseColumnWidth}px;
 
-    .avatar-image {
-        height: auto;
-        width: auto;
-        max-width: 100%;
-        max-height: 100%;
-    }
-
     .avatar-anchor {
         height: 100%;
         width: 50px;

@@ -8,7 +8,7 @@ export const routes: Record<View, IView> = {
         component: lazy(() => import(/* webpackChunkName: "home-view" */ '../views/Home/Home')),
     },
     [View.User]: {
-        url: '/user/:id',
+        url: '/user/:login',
         exact: false,
         component: lazy(() => import(/* webpackChunkName: "user-view" */ '../views/User/User')),
     },

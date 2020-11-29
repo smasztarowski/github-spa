@@ -1,27 +1,20 @@
-import { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+import { useParams } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
-import ArrowBack from '@material-ui/icons/ArrowBack';
 
-import { getRouteUrl } from '../../Router/utils/routeData';
-import { View } from '../../enums/view';
+import { GithubUserProfile } from '../../GithubUserProfile/GithubUserProfile';
 
 function User() {
-    const history = useHistory();
-
-    const handleOnClick = useCallback(() => {
-        history.push(getRouteUrl(View.Home));
-    }, [history]);
+    const { login } = useParams<{ login: string }>();
 
     return (
         <div>
-            <Button onClick={handleOnClick}>
-                <ArrowBack /> Users List
-            </Button>
-            <Box>
-                User data
-        </Box>
+            <header>
+                <Box fontSize="h2.fontSize">
+                    <h2>{login}</h2>
+                </Box>
+            </header>
+
+            <GithubUserProfile login={login} />
 
         </div>
     );

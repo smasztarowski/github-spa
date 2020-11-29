@@ -18,8 +18,8 @@ export class GithubApi {
 
     public getGithubUser(params: { username: string }): GetGithubUser {
         return request.get<GithubUserAccount>(
-            `${this.apiUrl}user`, {
-            params, headers: this.headers,
+            `${this.apiUrl}users/${params.username}`, {
+            headers: this.headers,
         });
     }
 

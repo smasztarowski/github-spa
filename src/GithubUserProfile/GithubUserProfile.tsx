@@ -61,6 +61,14 @@ export const GithubUserProfile: FC<GithubUserProfileProps> = (props) => {
         return null;
     }
 
+    const {
+        bio,
+        email,
+        html_url,
+        created_at,
+        location,
+    } = userProfile;
+
     return (
         <div>
             <Button onClick={handleOnClick}>
@@ -75,35 +83,40 @@ export const GithubUserProfile: FC<GithubUserProfileProps> = (props) => {
                     </Grid>
                     <Grid item xs={6}>
                         <Paper className={classes.paper}>
-                            {userProfile.bio}
+                            <Box>Bio:</Box>
+                            {bio}
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
                         <Paper className={classes.paper}>
                             <Box>E-mail:</Box>
-                            <Link href={userProfile.email}>
-                                {userProfile.email}
-                            </Link>
+                            {email ? (
+                                <Link href={email}>
+                                    {email}
+                                </Link>
+                            ) : null}
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
                         <Paper className={classes.paper}>
                             <Box>Github Profile:</Box>
-                            <Link href={userProfile.html_url}>
-                                {userProfile.html_url}
-                            </Link>
+                            {html_url ? (
+                                <Link href={html_url}>
+                                    {html_url}
+                                </Link>
+                            ) : null}
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
                         <Paper className={classes.paper}>
                             <Box>Location:</Box>
-                            <Box>{userProfile.location}</Box>
+                            <Box>{location}</Box>
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
                         <Paper className={classes.paper}>
                             <Box>Created at:</Box>
-                            <Box>{new Date(userProfile.created_at).toDateString()}</Box>
+                            <Box>{new Date(created_at).toDateString()}</Box>
                         </Paper>
                     </Grid>
                 </Grid>

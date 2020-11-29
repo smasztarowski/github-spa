@@ -1,6 +1,7 @@
 import { FC, useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useToasts } from 'react-toast-notifications';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -20,6 +21,8 @@ import {
 import { getRouteUrl } from '../Router/utils/routeData';
 import { View } from '../enums/view';
 import { LoadingState } from '../enums/loadingState';
+
+import { AppLoader } from '../AppLoader/AppLoader';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -44,8 +47,18 @@ export const GithubUserProfile: FC<GithubUserProfileProps> = (props) => {
     const history = useHistory();
     const userProfile = useSelector(getGithubUserProfile(login));
     const classes = useStyles();
+    const { addToast } = useToasts();
     const loadingState = useSelector(getGithubUserProfileLoadingState);
     const pending = loadingState === LoadingState.Pending;
+
+    useEffect(() => {
+        if (loadingState === LoadingState.Error) {
+            addToast('Failed to load User Profile data', {
+                appearance: 'error',
+                autoDismiss: true,
+            });
+        }
+    }, [loadingState, addToast]);
 
     useEffect(() => {
         if (!userProfile && !pending) {
@@ -58,7 +71,7 @@ export const GithubUserProfile: FC<GithubUserProfileProps> = (props) => {
     }, [history]);
 
     if (!userProfile) {
-        return null;
+        return <AppLoader />;
     }
 
     const {
@@ -67,6 +80,7 @@ export const GithubUserProfile: FC<GithubUserProfileProps> = (props) => {
         html_url,
         created_at,
         location,
+        avatar_url,
     } = userProfile;
 
     return (
@@ -78,7 +92,7 @@ export const GithubUserProfile: FC<GithubUserProfileProps> = (props) => {
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
                         <Paper className={classes.paper}>
-                            <img style={{ width: '100%' }} src={userProfile.avatar_url} alt={`${userProfile.login} avatar`} />
+                            <img style={{ width: '100%' }} src={avatar_url} alt={`${login} avatar`} />
                         </Paper>
                     </Grid>
                     <Grid item xs={6}>

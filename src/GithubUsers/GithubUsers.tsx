@@ -1,6 +1,7 @@
 import { FC, useCallback, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { DataGrid, ColDef, PageChangeParams } from '@material-ui/data-grid';
+import { useToasts } from 'react-toast-notifications';
 import { fetchGithubUsers } from './githubUsers.actions';
 import { setCurrentPage, setFetchedPages } from './githubUsers.slice';
 import {
@@ -58,6 +59,7 @@ const pageSize = 6;
 export const GithubUsers: FC = () => {
     const dispatch = useAppDispatch();
     const fetchedPages = useSelector(getGithubUsersFetchedPages);
+    const { addToast } = useToasts();
     const githubUsers = useSelector(getGithubUsers);
     const loadingState = useSelector(getGithubUsersLoadingState);
     const currentPage = useSelector(getGithubUsersCurrentPage);
@@ -65,6 +67,24 @@ export const GithubUsers: FC = () => {
     const totalCountLoadingState = useSelector(getGithubUsersCountLoadingState);
     const shouldFetchUsers = githubUsers.length === 0;
     const initialPage = useRef(currentPage).current;
+
+    useEffect(() => {
+        if (loadingState === LoadingState.Error) {
+            addToast('Failed to load GithubUsers', {
+                appearance: 'error',
+                autoDismiss: true,
+            });
+        }
+    }, [loadingState, addToast]);
+
+    useEffect(() => {
+        if (totalCountLoadingState === LoadingState.Error) {
+            addToast('Failed to load Users count', {
+                appearance: 'error',
+                autoDismiss: true,
+            });
+        }
+    }, [totalCountLoadingState, addToast]);
 
     useEffect(() => {
         if (shouldFetchUsers) {

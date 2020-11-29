@@ -1,6 +1,7 @@
 import { FC, useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useToasts } from 'react-toast-notifications';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -44,8 +45,18 @@ export const GithubUserProfile: FC<GithubUserProfileProps> = (props) => {
     const history = useHistory();
     const userProfile = useSelector(getGithubUserProfile(login));
     const classes = useStyles();
+    const { addToast } = useToasts();
     const loadingState = useSelector(getGithubUserProfileLoadingState);
     const pending = loadingState === LoadingState.Pending;
+
+    useEffect(() => {
+        if (loadingState === LoadingState.Error) {
+            addToast('Failed to load User Profile data', {
+                appearance: 'error',
+                autoDismiss: true,
+            });
+        }
+    }, [loadingState, addToast]);
 
     useEffect(() => {
         if (!userProfile && !pending) {

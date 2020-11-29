@@ -55,6 +55,10 @@ export interface GithubUsersCountParams {
     q: string;
 }
 
+export interface GithubUserProfileParams {
+    username: string;
+}
+
 export interface GithubUsersCount {
     total_count: number;
 }
@@ -62,7 +66,9 @@ export interface GithubUsersCount {
 export type GithubUserResponse = Response<GithubUserAccount>;
 export type GithubUsersResponse = Response<GithubUser[]>;
 export type GithubUsersCountResponse = Response<GithubUsersCount>;
+export type GithubUserProfileResponse = Response<GithubUserAccount>;
 
 export type GetGithubUser = Promise<GithubUserResponse>;
 export type GetGithubUsers = Promise<GithubUsersResponse>;
 export type GetGithubUsersCount = Promise<GithubUsersCountResponse>;
+export type GetGithubUserProfileResponse = Promise<GithubUserProfileResponse>;

@@ -1,5 +1,5 @@
 import Box from '@material-ui/core/Box';
-import { GithubUsers } from '../GithubUsers/GithubUsers';
+import { GithubUsers } from '../../GithubUsers/GithubUsers';
 
 function Home() {
     return (

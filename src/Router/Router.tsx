@@ -4,7 +4,7 @@ import {
     Route as ReactRoute,
 } from 'react-router-dom';
 
-import { Error404 } from '../Error404/Error404';
+import { Error404 } from '../views/Error404/Error404';
 import { Route } from './Route/Route';
 
 import { routes } from './router.routes';

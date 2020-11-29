@@ -1,4 +1,3 @@
-
 import { LoadingState } from '../../enums/loadingState';
 import { GithubUsersCountState } from '../githubUsersCount.interfaces';
 

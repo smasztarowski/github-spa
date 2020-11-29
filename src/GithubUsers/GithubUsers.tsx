@@ -9,6 +9,7 @@ import {
     getGithubUsersLoadingState,
     getGithubUsersCurrentPage,
     getGithubUsersFetchedPages,
+    getGithubUsersPagination,
 } from './githubUsers.selectors';
 
 import {
@@ -61,6 +62,7 @@ export const GithubUsers: FC = () => {
     const fetchedPages = useSelector(getGithubUsersFetchedPages);
     const { addToast } = useToasts();
     const githubUsers = useSelector(getGithubUsers);
+    const pagination = useSelector(getGithubUsersPagination);
     const loadingState = useSelector(getGithubUsersLoadingState);
     const currentPage = useSelector(getGithubUsersCurrentPage);
     const totalCount = useSelector(getGithubUsersTotalCount);
@@ -101,9 +103,13 @@ export const GithubUsers: FC = () => {
     useEffect(() => {
         if (!fetchedPages[currentPage]) {
             dispatch(setFetchedPages({ [currentPage]: true }));
-            dispatch(fetchGithubUsers({ since: ((currentPage - 1) * pageSize) + 1, per_page: pageSize }));
+            if (pagination?.next?.since) {
+                dispatch(fetchGithubUsers({ since: parseInt(pagination.next.since, 10), per_page: pageSize }));
+            } else {
+                dispatch(fetchGithubUsers({ since: ((currentPage - 1) * pageSize) + 1, per_page: pageSize }));
+            }
         }
-    }, [dispatch, currentPage, fetchedPages]);
+    }, [dispatch, currentPage, fetchedPages, pagination]);
 
     const handlePageChange = useCallback((params: PageChangeParams) => {
         const { page } = params;

@@ -17,6 +17,7 @@ export interface PaginationPage {
     per_page: string;
     rel: string;
     url: string;
+    since?: string;
 }
 
 export interface PaginationLinks {

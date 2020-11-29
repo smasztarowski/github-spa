@@ -25,12 +25,13 @@ export class SandboxApi extends GithubApi {
     }
     public getGithubUsers(params: GithubUsersParams): GetGithubUsers {
         const { since, per_page } = params;
-        const sinceUserIndex = usersData.findIndex((user: GithubUser) => user.id === since);
+        const sinceUserIndex = usersData.findIndex((user: GithubUser) => user.id === since + 1);
         const start = sinceUserIndex < 0 ? 0 : sinceUserIndex
         const end = start + per_page;
+        const data = usersData.slice(start, end);
 
         return Promise.resolve({
-            data: usersData.slice(start, end),
+            data,
             statusText: '',
             config: {},
             headers: {
@@ -56,12 +57,14 @@ export class SandboxApi extends GithubApi {
 
     private getLinkHeader(params: GithubUsersParams): string {
         const { since, per_page } = params;
+        const users = usersData.slice(since, since + per_page);
+        const user = users[users.length - 1];
         const allPages = Math.ceil(usersData.length / per_page);
         const currentPage = Math.ceil(since / per_page);
         const prevPage = currentPage - 1;
         const nextPage = currentPage + 1;
         const prev = `<https://api.github.com/user/repos?page=${prevPage}&per_page=${per_page}>; rel="prev"`;
-        const next = `<https://api.github.com/user/repos?page=${nextPage}&per_page=${per_page}>; rel="next"`;
+        const next = `<https://api.github.com/user/repos?page=${nextPage}&since=${user.id}&per_page=${per_page}>; rel="next"`;
         const last = `<https://api.github.com/user/repos?page=${allPages}&per_page=${per_page}>; rel="last"`;
         const first = `<https://api.github.com/user/repos?page=1&per_page=${per_page}>; rel="last"`;
 

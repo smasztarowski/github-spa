@@ -4,6 +4,8 @@ import Container from '@material-ui/core/Container';
 import { ToastProvider } from 'react-toast-notifications'
 import { Router as ReactRouter } from 'react-router-dom';
 
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+
 import { rootStore } from '../Root/RootStore/RootStore';
 import { Router } from '../Router/Router';
 

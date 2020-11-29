@@ -22,6 +22,8 @@ import { getRouteUrl } from '../Router/utils/routeData';
 import { View } from '../enums/view';
 import { LoadingState } from '../enums/loadingState';
 
+import { AppLoader } from '../AppLoader/AppLoader';
+
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -69,7 +71,7 @@ export const GithubUserProfile: FC<GithubUserProfileProps> = (props) => {
     }, [history]);
 
     if (!userProfile) {
-        return null;
+        return <AppLoader />;
     }
 
     const {
@@ -78,6 +80,7 @@ export const GithubUserProfile: FC<GithubUserProfileProps> = (props) => {
         html_url,
         created_at,
         location,
+        avatar_url,
     } = userProfile;
 
     return (
@@ -89,7 +92,7 @@ export const GithubUserProfile: FC<GithubUserProfileProps> = (props) => {
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
                         <Paper className={classes.paper}>
-                            <img style={{ width: '100%' }} src={userProfile.avatar_url} alt={`${userProfile.login} avatar`} />
+                            <img style={{ width: '100%' }} src={avatar_url} alt={`${login} avatar`} />
                         </Paper>
                     </Grid>
                     <Grid item xs={6}>

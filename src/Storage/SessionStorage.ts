@@ -24,4 +24,4 @@ class SessionStorage {
     }
 }
 
-export const sessionStorage = new SessionStorage();
+export const appSessionStorage = new SessionStorage();

@@ -1,5 +1,11 @@
-import { FC, useCallback } from 'react';
-import { Redirect, Route as ReactRoute, RouteComponentProps, RouteProps as ReactRouteProps } from 'react-router-dom';
+import { FC, useCallback, Fragment } from 'react';
+import {
+    Redirect,
+    Route as ReactRoute,
+    RouteComponentProps,
+    RouteProps as ReactRouteProps,
+} from 'react-router-dom';
+import { AppDevTool } from '../../AppDevTool/AppDevTool';
 
 import { getRouteUrl } from '../utils/routeData';
 
@@ -14,7 +20,10 @@ export const Route: FC<RouteProps> = (props) => {
         if (!Component) { return <Redirect to={getRouteUrl(View.Home)} />; }
 
         return (
-            <Component {...routeProps} />
+            <Fragment>
+                <AppDevTool />
+                <Component {...routeProps} />
+            </Fragment>
         );
     }, [Component]);
 

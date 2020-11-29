@@ -22,8 +22,6 @@ import { getRouteUrl } from '../Router/utils/routeData';
 import { View } from '../enums/view';
 import { LoadingState } from '../enums/loadingState';
 
-import { AppLoader } from '../AppLoader/AppLoader';
-
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -71,7 +69,11 @@ export const GithubUserProfile: FC<GithubUserProfileProps> = (props) => {
     }, [history]);
 
     if (!userProfile) {
-        return <AppLoader />;
+        return (
+            <Button onClick={handleOnClick}>
+                <ArrowBack /> Users List
+            </Button>
+        );
     }
 
     const {
